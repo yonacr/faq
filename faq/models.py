@@ -8,6 +8,9 @@ class Category(models.Model):
         max_length=256
     )
 
+    def __str__(self):
+        return self.name
+
 
 class Answer(models.Model):
 
@@ -32,7 +35,9 @@ class Question(models.Model):
     )
     category = models.ForeignKey(
         Category,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
     )
     creation_date = models.DateTimeField(
         auto_now_add=True
@@ -40,7 +45,8 @@ class Question(models.Model):
     answer = models.ForeignKey(
         Answer,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        blank=True
     )
 
 # EOF
