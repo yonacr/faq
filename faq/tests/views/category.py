@@ -14,7 +14,6 @@ class TestCategoryView(TestCase):
         cls.view = CategoryView()
         cls.user = baker.make('User')
         cls.client = Client()
-        # TODO: test for permission access
 
     def test_get_context_data_with_existing_category_kwargs(self):
         category = baker.make('Category')
