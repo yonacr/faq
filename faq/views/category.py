@@ -1,6 +1,6 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 
-from faq.models import Category
+from faq.models import Category, Question
 
 
 class CategoryView(TemplateView):
@@ -12,5 +12,11 @@ class CategoryView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['category'] = Category.objects.get(id=self.kwargs.get('id'))
         return context
+
+
+class CategoryListView(ListView):
+
+    model = Category
+    template_name = "category_list.html"
 
 # EOF
