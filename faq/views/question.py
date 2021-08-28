@@ -1,10 +1,11 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import FormView, ListView, TemplateView, UpdateView
+from django.views.generic import FormView, ListView, TemplateView, UpdateView, \
+    CreateView
 from django.views.generic.base import View
 
-from faq.forms.question import QuestionUpdateForm
+from faq.forms.question import QuestionUpdateForm, QuestionCreateForm
 from faq.forms.answer import AnswerCreateForm
 from faq.models import Question
 
@@ -68,6 +69,27 @@ class QuestionUpdateView(View):
 
         messages.success(request, "Réponse enregistrée")
         return redirect(reverse('faq:question_list'))
+
+
+class QuestionCreateView(FormView):
+    """
+    A view for asking a Question
+    """
+
+    form_class = QuestionCreateForm
+    template_name = "question_create.html"
+    success_url = reverse_lazy('faq:category_list')
+
+    def form_valid(self, form):
+        Question.objects.create(
+            text=form.cleaned_data['text'],
+            author=self.request.user,
+        )
+        messages.success(
+            self.request,
+            "Votre question a été soumise aux administrateurs"
+        )
+        return super().form_valid(form)
 
 # EOF
 

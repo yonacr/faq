@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+  <div class="container-fluid">
+    <h2 class="text-center display-4">Nouvelle question</h2>
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <form action="{% url 'faq:question_create' %}" method="POST">
+          {% csrf_token %}
+          <div class="card-body">
+            <div class="form-group">
+              {{ form.text }}
+            </div>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Soumettre la question</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
