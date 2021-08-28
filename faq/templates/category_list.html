@@ -6,10 +6,9 @@
     <h2 class="text-center display-4">Recherchez une question</h2>
     <div class="row">
       <div class="col-md-8 offset-md-2">
-        <form action="#" method="POST">
-          {% csrf_token %}
+        <form action="{% url 'faq:category_list' %}" method="GET">
           <div class="input-group">
-            <input type="search" class="form-control form-control-lg" placeholder="Entrez vos mots-clés ici">
+            <input type="text" name="q" class="form-control form-control-lg" placeholder="Entrez vos mots-clés ici">
             <div class="input-group-append">
               <button type="submit" class="btn btn-lg btn-default">
                 <i class="fa fa-search"></i>
@@ -24,13 +23,46 @@
   </div>
 </div>
 
+{% if result is not None %}
+<div class="row mb-lg-5">
+  {% if result %}
+  <div class="col-md-8 offset-md-2">
+    <p><strong>{{ result.count }} résultats trouvés</strong></p>
+    <div id="accordion">
+
+      {% for question in result %}
+      <div class="card ">
+        <div class="card-header">
+          <h4 class="card-title w-100">
+            <a class="d-block w-100" data-toggle="collapse" href="#question{{question.id}}">
+              {{ question.text }}
+            </a>
+          </h4>
+        </div>
+        <div id="question{{question.id}}" class="collapse show" data-parent="#accordion">
+          <div class="card-body">
+            {{ question.answer.text }}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <div class="col-md-8 offset-md-2">
+    <p><strong>0 résultats trouvés</strong></p>
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+
 <hr>
 
 <div class="row mt-lg-5">
   <div class="container-fluid">
-    <h3 class=" display-6 mb-5">Ou explorez une catégorie :</h3>
+    <h3 class=" display-6 mb-5">Nos catégories de question :</h3>
     <div class="row">
-      {% for category in object_list %}
+      {% for category in categories %}
       <div class="col-md-3 col-sm-6 col-12">
         <div class="info-box">
           <span class="info-box-icon bg-info"><i class="fas fa-question"></i></span>
