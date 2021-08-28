@@ -2,14 +2,23 @@
 {% load static %}
 
 {% block content %}
+<style>
+  .dataTables_filter {
+   float: right;
+   text-align: left;
+}
+</style>
 
 <div class="row">
   <div class="container-fluid">
+    <h2 class="text-center display-4 mb-lg-5">Répondre aux questions </h2>
     <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Question sans réponses ({{ unanswered.count }})</h3>
+            <h3 class="card-title">
+              Question sans réponses ({{ unanswered.count }})
+            </h3>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -35,14 +44,9 @@
           </div>
           <!-- /.card-body -->
         </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h3 class="card-title">Question répondues ({{ answered.count }})</h3>
+            <h3 class="card-title">Questions répondues ({{ answered.count }})</h3>
           </div>
           <!-- /.card-header -->
           <div class="card-body">
@@ -72,6 +76,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -89,6 +94,10 @@
 <script src="{% static 'plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
 
+<script src="{% static 'plugins/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'plugins/pdfmake/vfs_fonts.js' %}"></script>
+
 <script>
   $(function () {
     $('#unanswered').DataTable({
@@ -101,7 +110,7 @@
       "responsive": true,
     });
 
-  $('#answered').DataTable({
+    $('#answered').DataTable({
       "paging": true,
       "lengthChange": false,
       "searching": true,
