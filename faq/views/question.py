@@ -24,8 +24,8 @@ class QuestionListView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            "answered": Question.objects.exclude(answer=None),
-            "unanswered": Question.objects.filter(answer=None)
+            "answered": Question.objects.exclude(answer=None).order_by('creation_date'),
+            "unanswered": Question.objects.filter(answer=None).order_by('creation_date')
         })
         return context
 
@@ -59,10 +59,6 @@ class QuestionUpdateView(LoginRequiredMixin, PermissionRequiredMixin, View):
         else:
             answer_form = AnswerCreateForm(request.POST)
         question_form = QuestionUpdateForm(request.POST)
-        if answer_form.is_valid():
-            messages.info(request, "Answer is valid")
-        if question_form.is_valid():
-            messages.info(request, "Question is valid")
 
         if answer_form.is_valid() and question_form.is_valid():
             answer = answer_form.save(commit=False)
