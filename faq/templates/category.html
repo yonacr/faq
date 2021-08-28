@@ -10,6 +10,7 @@
         <!-- we are adding the accordion ID so Bootstrap's collapse plugin detects it -->
         <div id="accordion">
           {% for question in category.question_set.all %}
+          {% if question.answer %}
           <div class="card ">
             <div class="card-header">
               <h4 class="card-title w-100">
@@ -24,6 +25,7 @@
               </div>
             </div>
           </div>
+          {% endif %}
           {% endfor %}
         </div>
 
