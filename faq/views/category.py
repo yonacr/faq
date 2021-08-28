@@ -1,9 +1,10 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView, ListView
 
 from faq.models import Category, Question
 
 
-class CategoryView(TemplateView):
+class CategoryView(LoginRequiredMixin, TemplateView):
     """A view that displays a Category with its related Questions and Answers."""
 
     template_name = "category.html"
@@ -14,7 +15,7 @@ class CategoryView(TemplateView):
         return context
 
 
-class CategoryListView(ListView):
+class CategoryListView(LoginRequiredMixin, ListView):
 
     model = Category
     template_name = "category_list.html"

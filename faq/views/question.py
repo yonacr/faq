@@ -1,8 +1,12 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin
+)
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import FormView, ListView, TemplateView, UpdateView, \
-    CreateView
+from django.views.generic import FormView, TemplateView
+
 from django.views.generic.base import View
 
 from faq.forms.question import QuestionUpdateForm, QuestionCreateForm
@@ -10,7 +14,7 @@ from faq.forms.answer import AnswerCreateForm
 from faq.models import Question
 
 
-class QuestionListView(TemplateView):
+class QuestionListView(LoginRequiredMixin, TemplateView):
     """
     A view that displays all questions
     """
@@ -26,7 +30,7 @@ class QuestionListView(TemplateView):
         return context
 
 
-class QuestionUpdateView(View):
+class QuestionUpdateView(LoginRequiredMixin, PermissionRequiredMixin, View):
     """
     A view that allows to update a question's category,
     and create/update its related answer
@@ -34,6 +38,7 @@ class QuestionUpdateView(View):
 
     template_name = "question_update.html"
     success_url = reverse_lazy('faq:question_list')
+    permission_required = ('faq.change_question')
 
     def get(self, request, **kwargs):
         question = Question.objects.get(id=kwargs['id'])
@@ -71,7 +76,7 @@ class QuestionUpdateView(View):
         return redirect(reverse('faq:question_list'))
 
 
-class QuestionCreateView(FormView):
+class QuestionCreateView(LoginRequiredMixin, FormView):
     """
     A view for asking a Question
     """
